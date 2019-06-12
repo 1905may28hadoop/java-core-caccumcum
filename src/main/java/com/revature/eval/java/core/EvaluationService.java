@@ -15,7 +15,24 @@ public class EvaluationService {
 	 */
 	public String acronym(String phrase) {
 		// TODO Write an implementation for this method declaration
+		
+		//Convert the phrase to upper case
+		phrase = phrase.toUpperCase();
+		// create an acronym string 
+		String acronym="";
+		// extract the first letter from the phrase and add to the acronym string
+		acronym = acronym + phrase.charAt(0);
+		//search ' ' or '-' in the phrase and extract the character before that
+		for(int i = 1; i<=phrase.length();i++) {
+			if(phrase.charAt(i-1)== ' ' || phrase.charAt(i-1)==('-')){
+				//add the extracted characters to the acronym
+				acronym += phrase.charAt(i);
+			}
+		}
+		// print out all of the acronym that been extracted
+		System.out.println(acronym);
 		return null;
+		
 	}
 
 	/**
