@@ -1,5 +1,7 @@
 package com.revature.eval.java.core;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,12 +18,15 @@ public class EvaluationService {
 	public String acronym(String phrase) {
 		// TODO Write an implementation for this method declaration
 		
-		//Convert the phrase to upper case
+		//Convert the phrase to upper case to avoid the case sensitive error
 		phrase = phrase.toUpperCase();
-		// create an acronym string 
+		
 		String acronym="";
+		
+		
 		// extract the first letter from the phrase and add to the acronym string
 		acronym = acronym + phrase.charAt(0);
+		
 		//search ' ' or '-' in the phrase and extract the character before that
 		for(int i = 1; i<=phrase.length();i++) {
 			if(phrase.charAt(i-1)== ' ' || phrase.charAt(i-1)==('-')){
@@ -29,9 +34,8 @@ public class EvaluationService {
 				acronym += phrase.charAt(i);
 			}
 		}
-		// print out all of the acronym that been extracted
-		System.out.println(acronym);
-		return null;
+		
+		return acronym;
 		
 	}
 
@@ -51,8 +55,51 @@ public class EvaluationService {
 	 * @return
 	 */
 	public int getScrabbleScore(String string) {
-		// TODO Write an implementation for this method declaration
-		return 0;
+		
+		//convert the string to upper case to avoid the case sensitive error
+		string = string.toUpperCase();
+		
+		//Declare the total score 
+		int total = 0;
+
+		
+		//Create a loop to run "length" times,
+		// get each character in the string to compare in each case 
+		// if the character from the string equals to the character in each case,
+		// then return the number associated with that case 
+		// finally, add the number to total and return the total score.
+		for(int i=0; i<string.length(); i++) {
+			
+			switch (string.charAt(i)) {
+			
+			case 'A': case 'E': case 'I': case 'O': case 'U': case 'L': case 'N': case 'R': case 'S': case 'T':
+				total += 1; 
+				break;
+			case 'D': case 'G': 
+				total += 2; 
+				break;
+			case 'B': case 'C': case 'M': case 'P': 
+				total += 3; 
+				break;
+			case 'F': case 'H': case 'V': case 'W': case 'Y': 
+				total += 4; 
+				break;
+			case 'K': 
+				total += 5;
+				break;
+			case 'J': case 'X': 
+				total += 8; 
+				break;
+			case 'Z': case 'Q': 
+				  total += 10;
+				break;
+			default: 
+                break;
+			}
+			
+		}
+		System.out.println(total);
+		return total;
 	}
 
 	/**
@@ -88,7 +135,21 @@ public class EvaluationService {
 	 */
 	public String cleanPhoneNumber(String string) {
 		// TODO Write an implementation for this method declaration
-		return null;
+		
+		//Create an empty String str, 
+		// loop through the given string at each character to check if it is a number, 
+		// if it is number then add the character to the empty string.
+		String str ="";
+		for(int i=0;i<string.length();i++) {
+			if(Character.isDigit(string.charAt(i))) {
+				str += string.charAt(i);
+			}}
+		//check illegal format from given string.
+		// if the length of the number does not equal to 10 then it is an invalid number
+		//-------if(str.length()>10 || str.length()<10) {--------
+		if(str.length()!=10) {
+			 throw new IllegalArgumentException();
+		}return str;
 	}
 
 	/**
@@ -102,7 +163,36 @@ public class EvaluationService {
 	 */
 	public Map<String, Integer> wordCount(String string) {
 		// TODO Write an implementation for this method declaration
-		return null;
+		
+		//clean up the string to remove \n of the string
+		string = string.replaceAll("\n", "");
+		
+		// clean up the space from the begin/end of the string
+		// string = string.trim();
+		
+		//split up the string base on "," and " "
+		// then add to a String array
+		String[] strArray = string.split(",| ");
+		
+		//create a new HashMap with String and Integer
+		Map<String, Integer> map = new HashMap<>();
+		
+		//Loop through the array 
+		Integer count = 1;
+		for(int i=0;i<strArray.length;i++) {
+			// get the key from the map, if the key equal null, then return the value is 1 
+			if (map.get(strArray[i]) == null) {
+			    map.put(strArray[i], 1);
+			}
+			else {
+				// if the key is not null then add 1 to the count for each loop then retun the value for the associate key. 
+			    map.put(strArray[i], count +=1);
+//			    System.out.println(strArray[i]);
+//			    System.out.println(count);
+			}	
+		}
+//		System.out.println(map);
+		return map;
 	}
 
 	/**
@@ -141,24 +231,44 @@ public class EvaluationService {
 	 * 
 	 */
 	static class BinarySearch<T> {
+		
 		private List<T> sortedList;
-
+		
 		public int indexOf(T t) {
 			// TODO Write an implementation for this method declaration
-			return 0;
+//			System.out.println(sortedList);
+			
+			// create an Object array base on the given shorted list.
+			Object[] array = sortedList.toArray();
+			
+			//loop through the array and compare the key (t)
+			// if the key equal to the element in the array, return the loop count to get the index
+			int index =0;
+			for(int i=0; i<array.length;i++) {
+				if(t.equals(array[i])) {
+					index = i;
+				}
+			}
+		
+//			System.out.println(index);
+			return index;
 		}
 
 		public BinarySearch(List<T> sortedList) {
 			super();
 			this.sortedList = sortedList;
+//			System.out.println("bin ser"+sortedList);
 		}
 
 		public List<T> getSortedList() {
+//			System.out.println("get"+sortedList);
 			return sortedList;
+			
 		}
 
 		public void setSortedList(List<T> sortedList) {
 			this.sortedList = sortedList;
+//			System.out.println("set"+sortedList);
 		}
 
 	}
@@ -180,7 +290,21 @@ public class EvaluationService {
 	 */
 	public boolean isArmstrongNumber(int input) {
 		// TODO Write an implementation for this method declaration
-		return false;
+
+		// Cast the given number to a string
+		String num = Integer.toString(input);
+		
+		int temp = 0;
+		for(int i=0;i<num.length();i++) {
+			//
+			temp += Math.pow(Character.getNumericValue(num.charAt(i)),num.length());
+			
+			
+			} if (temp == input) {
+				return true;
+			}else {
+				return false;
+		}
 	}
 
 	/**
@@ -195,7 +319,21 @@ public class EvaluationService {
 	 */
 	public List<Long> calculatePrimeFactorsOf(long l) {
 		// TODO Write an implementation for this method declaration
-		return null;
+		List<Long> numList = new ArrayList<Long>();
+		
+		if(l == 2 || l==1) {
+			numList.add(l);
+		}else {
+			for(long i = 2; i< l; i++) {
+		         while(l%i == 0) {
+		            numList.add(i);
+		            l = l/i;
+		         }
+		      }
+		      if(l >2) {
+		    	  numList.add(l);
+		      }
+		}return numList;
 	}
 
 
@@ -233,8 +371,47 @@ public class EvaluationService {
 		 */
 		public static String encode(String string) {
 			// TODO Write an implementation for this method declaration
-			return null;
+		
+			string = string.toLowerCase();
+
+			String plain =  "abcdefghijklmnopqrstuvwxyz";
+			String cipher = "zyxwvutsrqponmlkjihgfedcba";
+			
+			// remove all characters that are not letter or number
+			String cleanString = "";
+			for (int i=0; i<string.length();i++) {
+				if(Character.isLetter(string.charAt(i)) || Character.isDigit(string.charAt(i))) {
+					cleanString += string.charAt(i);
+				}
+			}	
+			
+			//encode the string
+			String encode="";
+			for(int i=0; i<cleanString.length();i++) {
+				if(Character.isLetter(cleanString.charAt(i))){
+					for(int j=0; j<plain.length(); j++) {
+						if (cleanString.charAt(i)==plain.charAt(j)) {
+							encode+=cipher.charAt(j);
+						}
+					}
+				}else {
+					encode+=cleanString.charAt(i);
+				}
+			}
+		
+			//split the string in group of 5
+			String groupEncode ="";
+			int count = 0;
+			for (int j = 0; j <encode.length();j++) {
+				groupEncode += encode.charAt(j); count++;
+				if (count%5 == 0 && count<encode.length()) {
+					groupEncode += " ";
+				}
+			}
+			return groupEncode;
 		}
+
+
 
 		/**
 		 * Question 9
@@ -244,7 +421,33 @@ public class EvaluationService {
 		 */
 		public static String decode(String string) {
 			// TODO Write an implementation for this method declaration
-			return null;
+			string = string.toLowerCase();
+
+			String plain =  "abcdefghijklmnopqrstuvwxyz";
+			String cipher = "zyxwvutsrqponmlkjihgfedcba";
+			
+			
+			String cleanString = "";
+			for (int i=0; i<string.length();i++) {
+				if(Character.isLetter(string.charAt(i)) || Character.isDigit(string.charAt(i))) {
+					cleanString += string.charAt(i);
+				}
+			}	
+			
+			String decode="";
+			for(int i=0; i<cleanString.length();i++) {
+				if(Character.isLetter(cleanString.charAt(i))){
+					for(int j=0; j<plain.length(); j++) {
+						if (cleanString.charAt(i)==plain.charAt(j)) {
+							decode+=cipher.charAt(j);
+						}
+					}
+				}else {
+					decode+=cleanString.charAt(i);
+				}
+			}
+			
+			return decode;
 		}
 	}
 
@@ -254,7 +457,7 @@ public class EvaluationService {
 	 * 
 	 * Add two numbers together.
 	 * 
-	 * What is 5 plus 13?
+	 * What is 5 plus 13? 
 	 * 
 	 * 18
 	 * 
@@ -277,7 +480,23 @@ public class EvaluationService {
 	 */
 	public int solveWordProblem(String string) {
 		// TODO Write an implementation for this method declaration
-		return 0;
+
+ 		//	declare  result = 0
+		int result = 0;
+		// remove the ? from the string
+		string = string.replace("?", "");
+		
+		//split the string using " " to and put in the array
+		String[] array = string.split(" ");	
+
+		 switch (array[3]) {
+		 case "plus": result = Integer.parseInt(array[2])+ Integer.parseInt(array[4]); break;
+		 case "minus": result = Integer.parseInt(array[2])- Integer.parseInt(array[4]); break;
+		 case "multiplied": result = Integer.parseInt(array[2])* Integer.parseInt(array[5]); break;
+		 case "divided": result = Integer.parseInt(array[2])/ Integer.parseInt(array[5]); break;
+		 default: break;
+		 }
+		return result;
 	}
 
 }
