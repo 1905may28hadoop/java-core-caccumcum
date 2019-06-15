@@ -98,7 +98,6 @@ public class EvaluationService {
 			}
 			
 		}
-		System.out.println(total);
 		return total;
 	}
 
@@ -167,9 +166,6 @@ public class EvaluationService {
 		//clean up the string to remove \n of the string
 		string = string.replaceAll("\n", "");
 		
-		// clean up the space from the begin/end of the string
-		// string = string.trim();
-		
 		//split up the string base on "," and " "
 		// then add to a String array
 		String[] strArray = string.split(",| ");
@@ -187,11 +183,8 @@ public class EvaluationService {
 			else {
 				// if the key is not null then add 1 to the count for each loop then retun the value for the associate key. 
 			    map.put(strArray[i], count +=1);
-//			    System.out.println(strArray[i]);
-//			    System.out.println(count);
 			}	
 		}
-//		System.out.println(map);
 		return map;
 	}
 
@@ -235,8 +228,6 @@ public class EvaluationService {
 		private List<T> sortedList;
 		
 		public int indexOf(T t) {
-			// TODO Write an implementation for this method declaration
-//			System.out.println(sortedList);
 			
 			// create an Object array base on the given shorted list.
 			Object[] array = sortedList.toArray();
@@ -248,6 +239,7 @@ public class EvaluationService {
 				if(t.equals(array[i])) {
 					index = i;
 				}
+				// need to search for the left and right when split up the in middle
 			}
 		
 //			System.out.println(index);
@@ -257,18 +249,15 @@ public class EvaluationService {
 		public BinarySearch(List<T> sortedList) {
 			super();
 			this.sortedList = sortedList;
-//			System.out.println("bin ser"+sortedList);
 		}
 
 		public List<T> getSortedList() {
-//			System.out.println("get"+sortedList);
 			return sortedList;
 			
 		}
 
 		public void setSortedList(List<T> sortedList) {
 			this.sortedList = sortedList;
-//			System.out.println("set"+sortedList);
 		}
 
 	}
@@ -294,11 +283,11 @@ public class EvaluationService {
 		// Cast the given number to a string
 		String num = Integer.toString(input);
 		
+		
 		int temp = 0;
 		for(int i=0;i<num.length();i++) {
-			//
+			// get the first character in the converted string power the length of the string
 			temp += Math.pow(Character.getNumericValue(num.charAt(i)),num.length());
-			
 			
 			} if (temp == input) {
 				return true;
@@ -319,10 +308,13 @@ public class EvaluationService {
 	 */
 	public List<Long> calculatePrimeFactorsOf(long l) {
 		// TODO Write an implementation for this method declaration
+		
+		// create a new ArrayList with type Long
 		List<Long> numList = new ArrayList<Long>();
 		
-		if(l == 2 || l==1) {
+		 if(l == 2) {
 			numList.add(l);
+		
 		}else {
 			for(long i = 2; i< l; i++) {
 		         while(l%i == 0) {
@@ -330,10 +322,11 @@ public class EvaluationService {
 		            l = l/i;
 		         }
 		      }
-		      if(l >2) {
+			 if(l >2) {
 		    	  numList.add(l);
 		      }
-		}return numList;
+		}
+		return numList;
 	}
 
 
@@ -369,15 +362,101 @@ public class EvaluationService {
 		 * @param string
 		 * @return
 		 */
-		public static String encode(String string) {
-			// TODO Write an implementation for this method declaration
+		static String plain =  "abcdefghijklmnopqrstuvwxyz";
+		static String cipher = "zyxwvutsrqponmlkjihgfedcba";
 		
-			string = string.toLowerCase();
-
-			String plain =  "abcdefghijklmnopqrstuvwxyz";
-			String cipher = "zyxwvutsrqponmlkjihgfedcba";
+		public static String encode(String string) {
 			
-			// remove all characters that are not letter or number
+			String str = cleanString(string);
+			
+			String encode = encode1(str);			
+			
+			String finalEndcode = groupString(encode);
+			return finalEndcode;
+		}
+		/**
+		 * Question 9
+		 * 
+		 * @param string
+		 * @return
+		 */
+		public static String decode(String string) {
+			// TODO Write an implementation for this method declaration
+			String str = cleanString(string);
+			String decode = decode1(str);		
+			return decode;
+			}
+
+
+		// This method group with the size in 5 from the given string
+		private static String groupString(String str) {
+			String groupStr ="";
+			int count = 0;
+			for (int j = 0; j <str.length();j++) {
+				groupStr += str.charAt(j); count++;
+				if (count%5 == 0 && count<str.length()) {
+					groupStr += " ";
+				}
+			}return groupStr;
+		}
+
+		// this method will encode the string
+		private static String encode1 (String str) {
+			String encode="";
+			for(int i=0; i<str.length();i++) {
+				if(Character.isLetter(str.charAt(i))){
+					for(int j=0; j<plain.length(); j++) {
+						if (str.charAt(i)==plain.charAt(j)) {
+							encode+=cipher.charAt(j);
+						}
+					}
+				}else {
+					encode+=str.charAt(i);
+				}
+			}
+			return encode;
+		}
+
+
+		// this method to remove all characters in the string except letters and number
+		private static String cleanString(String str) {
+			str = str.toLowerCase();
+			String str1 = "";
+			
+			for (int i=0; i<str.length();i++) {
+				if(Character.isLetter(str.charAt(i)) || Character.isDigit(str.charAt(i))) {
+					str1 += str.charAt(i);
+				}
+			}	
+			return str1;
+		}
+		
+		// this method will decode the string
+		private static String decode1(String str) {
+			String decode="";
+			//loop the the string ;
+			for(int i=0; i<str.length();i++) {
+				// check if the character is a letter then return the index from cipher string, to 
+				if(Character.isLetter(str.charAt(i))){
+					for(int j=0; j<plain.length(); j++) {
+						if (str.charAt(i)==plain.charAt(j)) {
+							decode+=cipher.charAt(j);
+						}
+					}
+				}else {
+					decode+=str.charAt(i);
+				}
+			}
+			
+			return decode;
+		}
+	}
+
+	
+/*----------------------------------------------------------------			
+			To encode: This code is broke in methods
+			 
+			 remove all characters that are not letter or number
 			String cleanString = "";
 			for (int i=0; i<string.length();i++) {
 				if(Character.isLetter(string.charAt(i)) || Character.isDigit(string.charAt(i))) {
@@ -385,7 +464,7 @@ public class EvaluationService {
 				}
 			}	
 			
-			//encode the string
+			encode the string
 			String encode="";
 			for(int i=0; i<cleanString.length();i++) {
 				if(Character.isLetter(cleanString.charAt(i))){
@@ -399,7 +478,7 @@ public class EvaluationService {
 				}
 			}
 		
-			//split the string in group of 5
+			split the string in group of 5
 			String groupEncode ="";
 			int count = 0;
 			for (int j = 0; j <encode.length();j++) {
@@ -408,21 +487,12 @@ public class EvaluationService {
 					groupEncode += " ";
 				}
 			}
-			return groupEncode;
-		}
-
-
-
-		/**
-		 * Question 9
-		 * 
-		 * @param string
-		 * @return
-		 */
-		public static String decode(String string) {
-			// TODO Write an implementation for this method declaration
-			string = string.toLowerCase();
-
+			
+-----------------------------------------------------------------*/			
+					
+/*-------------------------------------------------------------------------		
+			To decode: This code is broke in methods
+			
 			String plain =  "abcdefghijklmnopqrstuvwxyz";
 			String cipher = "zyxwvutsrqponmlkjihgfedcba";
 			
@@ -446,10 +516,8 @@ public class EvaluationService {
 					decode+=cleanString.charAt(i);
 				}
 			}
-			
-			return decode;
-		}
-	}
+------------------------------------------------------------------------------*/		
+		
 
 	/**
 	 * 10. Parse and evaluate simple math word problems returning the answer as an
@@ -488,7 +556,8 @@ public class EvaluationService {
 		
 		//split the string using " " to and put in the array
 		String[] array = string.split(" ");	
-
+		
+		//Switch use the third index to return the result
 		 switch (array[3]) {
 		 case "plus": result = Integer.parseInt(array[2])+ Integer.parseInt(array[4]); break;
 		 case "minus": result = Integer.parseInt(array[2])- Integer.parseInt(array[4]); break;

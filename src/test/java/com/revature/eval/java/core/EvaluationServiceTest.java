@@ -197,7 +197,7 @@ public class EvaluationServiceTest {
 
 	@Test
 	public void findsAValueAtTheBeginningOfAnArray() {
-		List<Integer> sortedList = Collections.unmodifiableList(Arrays.asList(1, 3, 4, 6, 8, 9, 11));
+		List<Integer> sortedList = Collections.unmodifiableList(Arrays.asList(1, 3, 32, 67, 4, 6, 8, 9, 11));
 
 		EvaluationService.BinarySearch<Integer> search = new EvaluationService.BinarySearch<>(sortedList);
 
